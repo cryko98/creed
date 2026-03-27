@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>$CREED — The Rhino on Solana</title>
+  <meta name="description" content="$CREED is the official memecoin of Creed, the baby white rhino born at Rolling Hills Zoo. Built on Solana. Thick skin. Strong horns. Moon bound." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="https://lcaryepoaiuzuppladzq.supabase.co/storage/v1/object/public/lost/lost%20(1).png" />
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES & RESET
+    ============================================================ */
+    :root {
+      --mud:       #2b1f0e;
+      --earth:     #5c3d1e;
+      --savanna:   #c8a06b;
+      --grass:     #7a9e4e;
+      --horn:      #d4b483;
+      --cream:     #f5eedf;
+      --accent:    #e07b2a;
+      --white:     #faf6ef;
+      --dark:      #1a1208;
+      --sol-purple:#9945ff;
+      --sol-green: #14f195;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--mud);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.35;
+    }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    h1, h2, h3, .display {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.04em;
+      line-height: 0.95;
+    }
+
+    .italic-serif {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(27, 16, 5, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 180, 131, 0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--horn);
+      letter-spacing: 0.12em;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; color: var(--horn); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: var(--dark) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+      font-weight: 700 !important;
+      opacity: 1 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--horn) !important; }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* animated mud-ground gradient */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(122,158,78,0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse 100% 80% at 30% -20%, rgba(224,123,42,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--sol-green);
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-size: clamp(6rem, 18vw, 16rem);
+      color: var(--horn);
+      line-height: 0.85;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title .outline {
+      -webkit-text-stroke: 2px var(--horn);
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 3vw, 2rem);
+      color: var(--savanna);
+      margin-top: 0.6rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.6s forwards;
+    }
+
+    .hero-rhino {
+      width: clamp(120px, 22vw, 220px);
+      height: clamp(120px, 22vw, 220px);
+      object-fit: contain;
+      margin: 1.5rem 0;
+      opacity: 0;
+      animation: fadeUp 1s 0.5s forwards, float 4s 1.5s ease-in-out infinite;
+      filter: drop-shadow(0 8px 40px rgba(212,180,131,0.45));
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-desc {
+      max-width: 560px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: rgba(245,238,223,0.75);
+      margin: 1.2rem auto 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.9s 1s forwards;
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2.2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: transform 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--dark);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--horn);
+      border: 2px solid var(--horn);
+    }
+
+    .btn-outline:hover { background: rgba(212,180,131,0.1); }
+
+    .btn-sol {
+      background: linear-gradient(135deg, var(--sol-purple), #6d28d9);
+      color: white;
+    }
+
+    /* ============================================================
+       CA SECTION
+    ============================================================ */
+    .ca-strip {
+      background: var(--dark);
+      border-top: 1px solid rgba(212,180,131,0.2);
+      border-bottom: 1px solid rgba(212,180,131,0.2);
+      padding: 1.2rem 2rem;
+      text-align: center;
+    }
+
+    .ca-strip p {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sol-green);
+      margin-bottom: 0.4rem;
+    }
+
+    .ca-address {
+      font-family: 'DM Sans', monospace;
+      font-size: clamp(0.6rem, 1.8vw, 0.85rem);
+      color: var(--savanna);
+      letter-spacing: 0.05em;
+      word-break: break-all;
+      cursor: pointer;
+      transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .ca-address:hover { color: var(--horn); }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid rgba(212,180,131,0.4);
+      color: var(--horn);
+      padding: 0.2rem 0.6rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .copy-btn:hover, .copy-btn.copied { background: var(--accent); border-color: var(--accent); color: var(--dark); }
+
+    /* ============================================================
+       ABOUT SECTION
+    ============================================================ */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grass);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--horn);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(245,238,223,0.8);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p strong { color: var(--horn); }
+
+    .about-image-frame {
+      position: relative;
+    }
+
+    .zoo-image-container {
+      width: 100%;
+      aspect-ratio: 4/3;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 2px solid rgba(212,180,131,0.3);
+      position: relative;
+      background: var(--earth);
+    }
+
+    .zoo-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(27,16,5,0.95), transparent);
+      padding: 2rem 1.2rem 1rem;
+      font-size: 0.8rem;
+      color: var(--savanna);
+      letter-spacing: 0.08em;
+    }
+
+    .frame-accent {
+      position: absolute;
+      top: -12px; right: -12px;
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    /* ============================================================
+       STATS / TICKER BAND
+    ============================================================ */
+    .ticker-band {
+      background: var(--accent);
+      color: var(--dark);
+      padding: 0.7rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker-inner {
+      display: inline-flex;
+      gap: 3rem;
+      animation: ticker 20s linear infinite;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+    }
+
+    .ticker-inner span::before { content: '🦏 '; }
+
+    /* ============================================================
+       TOKENOMICS
+    ============================================================ */
+    .tokenomics-bg {
+      background: var(--dark);
+      border-top: 1px solid rgba(212,180,131,0.15);
+      border-bottom: 1px solid rgba(212,180,131,0.15);
+    }
+
+    .tokenomics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(212,180,131,0.12);
+      border: 1px solid rgba(212,180,131,0.12);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 3rem;
+    }
+
+    .token-card {
+      background: var(--dark);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    .token-card .big-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--horn);
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+
+    .token-card .big-num span { color: var(--accent); }
+
+    .token-card p {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,238,223,0.5);
+      margin-top: 0.5rem;
+    }
+
+    /* ============================================================
+       HOW TO BUY
+    ============================================================ */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .step-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(212,180,131,0.15);
+      border-radius: 4px;
+      padding: 2rem 1.5rem;
+      position: relative;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .step-card:hover {
+      border-color: rgba(224,123,42,0.5);
+      background: rgba(224,123,42,0.06);
+    }
+
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: rgba(212,180,131,0.15);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-card h3 {
+      font-size: 1.1rem;
+      color: var(--horn);
+      margin-bottom: 0.7rem;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.05em;
+    }
+
+    .step-card p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: rgba(245,238,223,0.65);
+    }
+
+    /* ============================================================
+       RHINO STORY
+    ============================================================ */
+    .story-section {
+      text-align: center;
+      padding: 6rem 2rem;
+      background: linear-gradient(to bottom, var(--mud), var(--earth), var(--mud));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .big-rhino-bg {
+      position: absolute;
+      font-size: 30vw;
+      opacity: 0.04;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .story-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .story-content .section-title {
+      font-size: clamp(3.5rem, 10vw, 8rem);
+    }
+
+    .story-content p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: rgba(245,238,223,0.75);
+      margin-bottom: 1rem;
+    }
+
+    .story-content .quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--savanna);
+      border-left: 3px solid var(--accent);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      text-align: left;
+    }
+
+    /* ============================================================
+       SOCIAL / CTA FOOTER AREA
+    ============================================================ */
+    .cta-section {
+      background: var(--dark);
+      text-align: center;
+      padding: 6rem 2rem;
+      border-top: 1px solid rgba(212,180,131,0.15);
+    }
+
+    .cta-section .section-title {
+      font-size: clamp(3rem, 9vw, 7rem);
+    }
+
+    .cta-section p {
+      font-size: 1.05rem;
+      color: rgba(245,238,223,0.6);
+      max-width: 500px;
+      margin: 1rem auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--savanna);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.4rem;
+      border: 1px solid rgba(212,180,131,0.3);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      border-color: var(--accent);
+      color: var(--horn);
+      background: rgba(224,123,42,0.08);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: #0f0a04;
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(212,180,131,0.08);
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      color: rgba(245,238,223,0.3);
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    footer a { color: rgba(245,238,223,0.4); }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: rgba(212,180,131,0.25);
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+    }
+
+    /* ============================================================
+       ANIMATIONS
+    ============================================================ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-16px); }
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .tokenomics-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+    }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav>
+    <a href="#" class="nav-logo">$<span>CREED</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#tokenomics">Tokenomics</a></li>
+      <li><a href="#how-to-buy">How to Buy</a></li>
+      <li>
+        <a href="https://dexscreener.com/solana/3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump"
+           target="_blank" rel="noopener" class="nav-cta">Buy $CREED</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="hero" id="home">
+    <p class="hero-eyebrow">🌿 Born February 8, 2026 · Solana Network · $CREED</p>
+
+    <img
+      src="https://lcaryepoaiuzuppladzq.supabase.co/storage/v1/object/public/lost/lost%20(1).png"
+      alt="$CREED Logo"
+      class="hero-rhino"
+    />
+
+    <h1 class="hero-title">
+      CREED<br>
+      <span class="outline">THE RHINO</span>
+    </h1>
+
+    <p class="hero-subtitle">Thick skin. Strong horn. Solana bound.</p>
+
+    <p class="hero-desc">
+      Meet Creed — the baby white rhino who captured the world's heart at Rolling Hills Zoo.
+      Now he's charging onto the Solana blockchain. This isn't just a memecoin.
+      This is <strong>a legend being born.</strong>
+    </p>
+
+    <div class="hero-buttons">
+      <a href="https://dexscreener.com/solana/3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump"
+         target="_blank" rel="noopener" class="btn btn-primary">
+        🚀 Buy $CREED
+      </a>
+      <a href="https://x.com/CreedTheRhino" target="_blank" rel="noopener" class="btn btn-outline">
+        𝕏 Follow on X
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CONTRACT ADDRESS STRIP
+  ============================================================ -->
+  <div class="ca-strip">
+    <p>Contract Address · Solana</p>
+    <span class="ca-address" id="ca-text">
+      3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump
+      <button class="copy-btn" id="copy-btn" onclick="copyCA()">Copy</button>
+    </span>
+  </div>
+
+
+  <!-- ============================================================
+       TICKER BAND
+  ============================================================ -->
+  <div class="ticker-band">
+    <div class="ticker-inner" aria-hidden="true">
+      <span>$CREED · Solana Memecoin</span>
+      <span>Born Feb 8 2026</span>
+      <span>Rolling Hills Zoo</span>
+      <span>White Rhino Species Survival</span>
+      <span>Thick Skin Strong Hands</span>
+      <span>$CREED to the Moon</span>
+      <span>$CREED · Solana Memecoin</span>
+      <span>Born Feb 8 2026</span>
+      <span>Rolling Hills Zoo</span>
+      <span>White Rhino Species Survival</span>
+      <span>Thick Skin Strong Hands</span>
+      <span>$CREED to the Moon</span>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       ABOUT CREED
+  ============================================================ -->
+  <section id="about">
+    <div class="section">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="section-label reveal">The Origin Story</span>
+          <h2 class="section-title reveal">MEET<br>CREED</h2>
+          <div class="reveal">
+            <p>
+              On <strong>February 8, 2026</strong>, a miracle happened at Rolling Hills Zoo in Salina, Kansas.
+              A male southern white rhinoceros calf was born — and the internet fell in love.
+            </p>
+            <p>
+              Mom <strong>Evey (19)</strong> and dad <strong>Kengele (27)</strong> brought into the world a legend.
+              Staff named him <strong>Creed</strong> — a nod to the KC Chiefs' own Creed Humphrey, who visited to meet his namesake.
+            </p>
+            <p>
+              Southern white rhinos are the <strong>second-largest land mammals</strong> on Earth.
+              Once nearly extinct, they've fought back. Just like Creed. Just like $CREED holders.
+            </p>
+            <p>
+              <strong>This coin is for the believers. The thick-skinned. The ones who charge forward.</strong>
+            </p>
+            <a href="https://www.rollinghillszoo.org/rhino-calf-updates" target="_blank" rel="noopener"
+               class="btn btn-outline" style="margin-top:1rem;">
+              🦏 See Creed's Updates
+            </a>
+          </div>
+        </div>
+
+        <div class="about-image-frame reveal">
+          <div class="zoo-image-container">
+            <img
+              src="https://cdn.prod.website-files.com/58e7a89431bd126cb77dcf19/69a60b074a669ef69246dfc4_BabyRhino_Feb2026.jpg"
+              alt="Baby Rhino Creed at Rolling Hills Zoo"
+              loading="lazy"
+            />
+            <div class="image-caption">📍 Rolling Hills Zoo, Salina, Kansas · February 2026</div>
+          </div>
+          <div class="frame-accent"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       TOKENOMICS
+  ============================================================ -->
+  <section class="tokenomics-bg" id="tokenomics">
+    <div class="section">
+      <span class="section-label reveal">On-chain Details</span>
+      <h2 class="section-title reveal">TOKENOMICS</h2>
+      <p class="reveal" style="color:rgba(245,238,223,0.65); max-width:540px; line-height:1.7; font-size:0.95rem;">
+        Simple. Fair. Community-driven. Just like a white rhino — powerful, transparent, and built to last.
+      </p>
+
+      <div class="tokenomics-grid reveal">
+        <div class="token-card">
+          <div class="big-num">1<span>B</span></div>
+          <p>Total Supply</p>
+        </div>
+        <div class="token-card">
+          <div class="big-num">0<span>%</span></div>
+          <p>Team Allocation</p>
+        </div>
+        <div class="token-card">
+          <div class="big-num">0<span>%</span></div>
+          <p>Buy / Sell Tax</p>
+        </div>
+        <div class="token-card">
+          <div class="big-num">100<span>%</span></div>
+          <p>Community Owned</p>
+        </div>
+        <div class="token-card">
+          <div class="big-num">🔥</div>
+          <p>LP Burned</p>
+        </div>
+        <div class="token-card">
+          <div class="big-num">SOL</div>
+          <p>Network · Solana</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       RHINO STORY (big visual break)
+  ============================================================ -->
+  <section class="story-section">
+    <div class="big-rhino-bg" aria-hidden="true">
+      <img src="https://lcaryepoaiuzuppladzq.supabase.co/storage/v1/object/public/lost/lost%20(1).png" alt="" style="width:30vw; opacity:0.06; pointer-events:none;" />
+    </div>
+    <div class="story-content">
+      <span class="section-label reveal">Why $CREED?</span>
+      <h2 class="section-title reveal">BORN<br>TO<br>CHARGE</h2>
+
+      <blockquote class="quote reveal">
+        "This calf represents an important step in protecting the future of the species."
+        <br><small style="font-size:0.75rem; opacity:0.6; font-style:normal;">— Rolling Hills Zoo</small>
+      </blockquote>
+
+      <p class="reveal">
+        The southern white rhino was once hunted to near extinction. Against all odds, they came back.
+        Creed is proof that the fight isn't over — that resilience wins.
+      </p>
+      <p class="reveal">
+        That's the $CREED spirit. We don't fold. We don't paper-hand. We charge.
+      </p>
+
+      <div style="margin-top:2.5rem;" class="reveal">
+        <a href="https://dexscreener.com/solana/3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump"
+           target="_blank" rel="noopener" class="btn btn-sol">
+          🌐 Trade on DEX
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       HOW TO BUY
+  ============================================================ -->
+  <section id="how-to-buy">
+    <div class="section">
+      <span class="section-label reveal">Getting Started</span>
+      <h2 class="section-title reveal">HOW TO<br>BUY $CREED</h2>
+
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <div class="step-num">01</div>
+          <h3>Get a Solana Wallet</h3>
+          <p>Download <strong>Phantom</strong> or <strong>Solflare</strong> and create your wallet. Keep your seed phrase safe — always.</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">02</div>
+          <h3>Buy SOL</h3>
+          <p>Purchase SOL on <strong>Coinbase</strong>, <strong>Binance</strong>, or any major exchange, then send it to your wallet.</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">03</div>
+          <h3>Swap on Jupiter</h3>
+          <p>Go to <strong>jup.ag</strong>, connect your wallet, paste the $CREED contract address and swap your SOL.</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">04</div>
+          <h3>Hold & Charge</h3>
+          <p>Welcome to the herd. Follow us on <strong>X</strong> for updates, memes, and community drops. 🦏</p>
+        </div>
+      </div>
+
+      <div style="margin-top:3rem; text-align:center;" class="reveal">
+        <p style="font-size:0.8rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--grass); margin-bottom:1rem;">Contract Address</p>
+        <div class="ca-address" style="font-size:0.85rem; justify-content:center;">
+          3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump
+        </div>
+        <div style="margin-top:1.5rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+          <a href="https://jup.ag/swap/SOL-3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump"
+             target="_blank" rel="noopener" class="btn btn-primary">
+            ⚡ Buy on Jupiter
+          </a>
+          <a href="https://dexscreener.com/solana/3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump"
+             target="_blank" rel="noopener" class="btn btn-outline">
+            📊 DexScreener Chart
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       TWEET EMBED
+  ============================================================ -->
+  <section style="background: var(--dark); padding: 5rem 2rem; border-top: 1px solid rgba(212,180,131,0.12);">
+    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+      <span class="section-label reveal">From the Herd</span>
+      <h2 class="section-title reveal" style="margin-bottom: 2.5rem;">CREED<br>SPEAKS</h2>
+      <div class="reveal" style="display:flex; justify-content:center;">
+        <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+          <a href="https://x.com/CreedTheRhino/status/2037578688418742659"></a>
+        </blockquote>
+      </div>
+      <div class="reveal" style="margin-top: 2rem;">
+        <a href="https://x.com/CreedTheRhino" target="_blank" rel="noopener" class="btn btn-outline">
+          𝕏 &nbsp;Follow @CreedTheRhino
+        </a>
+      </div>
+    </div>
+  </section>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+  <!-- ============================================================
+       CTA / COMMUNITY
+  ============================================================ -->
+  <section class="cta-section" id="community">
+    <span class="section-label reveal">Join the Herd</span>
+    <h2 class="section-title reveal">THE RHINO<br>HERD<br>AWAITS</h2>
+    <p class="reveal">
+      $CREED is more than a token — it's a movement.
+      Join thousands of believers who know that thick skin and strong hands always win.
+    </p>
+    <div class="reveal">
+      <a href="https://dexscreener.com/solana/3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump"
+         target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1.3rem; padding:1.1rem 2.8rem;">
+        🦏 Buy $CREED Now
+      </a>
+    </div>
+
+    <div class="social-links reveal">
+      <a href="https://x.com/CreedTheRhino" target="_blank" rel="noopener" class="social-link">
+        𝕏 &nbsp;Twitter / X
+      </a>
+      <a href="https://dexscreener.com/solana/3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump"
+         target="_blank" rel="noopener" class="social-link">
+        📊 DexScreener
+      </a>
+      <a href="https://jup.ag/swap/SOL-3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump"
+         target="_blank" rel="noopener" class="social-link">
+        ⚡ Jupiter Swap
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="footer-logo">$CREED</div>
+    <p>
+      $CREED is a community memecoin on the Solana blockchain inspired by Creed, the baby white rhino
+      born at <a href="https://www.rollinghillszoo.org/rhino-calf-updates" target="_blank" rel="noopener">Rolling Hills Zoo</a> on February 8, 2026.
+      <br><br>
+      $CREED is a meme coin with no intrinsic value or expectation of financial return.
+      There is no formal team or roadmap. The coin is entirely useless and for entertainment purposes only.
+      Crypto assets carry significant risk. Never invest more than you can afford to lose. DYOR.
+    </p>
+    <p style="margin-top:1rem; font-size:0.65rem; opacity:0.4;">
+      $CREED is not affiliated with Rolling Hills Zoo or any official organization.
+    </p>
+  </footer>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // Copy CA
+    function copyCA() {
+      const ca = '3nF4oLzbATbwm9o21X84kAk47cEz8AdFtDkgARs4pump';
+      navigator.clipboard.writeText(ca).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
